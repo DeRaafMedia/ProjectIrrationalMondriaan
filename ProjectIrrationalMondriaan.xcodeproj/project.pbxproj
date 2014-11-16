@@ -197,8 +197,6 @@
 		402579631A1898AA008274CE /* .gitkeep */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = .gitkeep; sourceTree = "<group>"; };
 		402579641A1898AA008274CE /* icon.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; path = icon.icns; sourceTree = "<group>"; };
 		402579651A1898AA008274CE /* Verdana.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = Verdana.ttf; sourceTree = "<group>"; };
-		402579661A1898AA008274CE /* ProjectIrrationalMondriaanDebug.app */ = {isa = PBXFileReference; lastKnownFileType = wrapper.application; path = ProjectIrrationalMondriaanDebug.app; sourceTree = "<group>"; };
-		402579671A1898AA008274CE /* ProjectIrrationalMondrian_1Debug.app */ = {isa = PBXFileReference; lastKnownFileType = wrapper.application; path = ProjectIrrationalMondrian_1Debug.app; sourceTree = "<group>"; };
 		402579681A1898BF008274CE /* Irrational Mondriaan.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Irrational Mondriaan.png"; sourceTree = "<group>"; };
 		4029F63B1A186691006AF0DA /* rectangles.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = rectangles.h; sourceTree = "<group>"; };
 		4029F63C1A18669E006AF0DA /* rectangles.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = rectangles.cpp; sourceTree = "<group>"; };
@@ -707,8 +705,6 @@
 			isa = PBXGroup;
 			children = (
 				402579621A1898AA008274CE /* data */,
-				402579661A1898AA008274CE /* ProjectIrrationalMondriaanDebug.app */,
-				402579671A1898AA008274CE /* ProjectIrrationalMondrian_1Debug.app */,
 			);
 			path = bin;
 			sourceTree = "<group>";
