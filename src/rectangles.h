@@ -38,7 +38,7 @@ class rectangles{
         int blue;
         int diameter;
     
-        oscHandlers oscHandler;
+        oscHandlers listener;
         ofTrueTypeFont font;
     
     private:

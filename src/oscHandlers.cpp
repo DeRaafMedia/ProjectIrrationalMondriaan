@@ -44,15 +44,15 @@ void oscHandlers::listener(string squareId){
         // get the next message
         ofxOscMessage m;
         receiver.getNextMessage(&m);
-        listenForIdValue = "/irrationalMondrian_1/" + squareId + "/id";
-        listenForXAxisValue = "/irrationalMondrian_1/" + squareId + "/x";
-        listenForYAxisValue = "/irrationalMondrian_1/" + squareId + "/y";
-        listenForWidthValue = "/irrationalMondrian_1/" + squareId + "/w";
-        listenForHeightValue = "/irrationalMondrian_1/" + squareId + "/h";
-        listenForRedValue = "/irrationalMondrian_1/" + squareId + "/r";
-        listenForGreenValue = "/irrationalMondrian_1/" + squareId + "/g";
-        listenForBlueValue = "/irrationalMondrian_1/" + squareId + "/b";
-        listenForDiameterValue = "/irrationalMondrian_1/" + squareId + "/d";
+        listenForIdValue = "/irrationalMondriaan/" + squareId + "/id";
+        listenForXAxisValue = "/irrationalMondriaan/" + squareId + "/x";
+        listenForYAxisValue = "/irrationalMondriaan/" + squareId + "/y";
+        listenForWidthValue = "/irrationalMondriaan/" + squareId + "/w";
+        listenForHeightValue = "/irrationalMondriaan/" + squareId + "/h";
+        listenForRedValue = "/irrationalMondriaan/" + squareId + "/r";
+        listenForGreenValue = "/irrationalMondriaan/" + squareId + "/g";
+        listenForBlueValue = "/irrationalMondriaan/" + squareId + "/b";
+        listenForDiameterValue = "/irrationalMondriaan/" + squareId + "/d";
         
         if(m.getAddress() == listenForIdValue){
             idValue = m.getArgAsInt32(0);
