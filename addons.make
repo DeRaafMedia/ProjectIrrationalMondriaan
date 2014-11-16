@@ -1,0 +1,17 @@
+ofxAssimpModelLoader
+ofxGui
+ofxKinect
+ofxNetwork
+ofxOpenCv
+ofxOsc
+ofxSvg
+ofxThreadedImageLoader
+ofxVectorGraphics
+ofxXmlSettings
+ofxAccelerometer
+ofxAndroid
+ofxEmscripten
+ofxiOS
+ofxMultiTouch
+ofxSynth
+addons
