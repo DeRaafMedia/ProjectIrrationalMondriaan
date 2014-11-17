@@ -19,7 +19,7 @@ What these video paintings do is giving the viewer the opportunity to counter ac
 
 ![alt tag](https://github.com/DeRaafMedia/ProjectIrrationalMondriaan/blob/master/bin/data/Irrational Mondriaan.png)
 
-(This specific painitng is sound reactive (viewer needs to yell really hard for the full effect). The solid red dot in the middle will appear with a low volume sound. The CMY dots are meant for an other rewrite for now I keep it in this app because it's gonna use the same sound reactivness. For now the CMY dots need far more volume to 'grow'. As a 'reward' for the viewer the CMY colors will mix when they 'grow' to a size that they overlap things)
+(This specific painitng is sound reactive (viewer needs to yell really hard for the full effect). The solid red dot in the middle will appear with a low volume sound. The CMY dots are meant for an other rewrite i'm doing. I keep them in this app because it's gonna use the same sound reactivness. For now the CMY dots need far more volume to 'grow'. As a 'reward' for the viewer the CMY colors will mix when they 'grow' to a size that they overlap things)
 
 In a related series (still as Processing sketch) I have a 'Who's afraid of Red, Yellow and Blue' by Barnett Newman where the viewer can take a virtual knife to the canvas. 
 
