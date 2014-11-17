@@ -21,7 +21,7 @@ What these video paintings do is giving the viewer the opportunity to counter ac
 
 (This specific painitng is sound reactive (viewer needs to yell really hard for the full effect). The solid red dot in the middle will appear with a low volume sound. The CMY dots need far more volume to 'grow'. As a 'reward' for the viewer the CMY colors will mix when they 'grow' to a size that they overlap things)
 
-In a related series (still as Processing sketch) I have a 'Who's afraid of Red, Yellow and Blue' where the viewer can take a virtual knife to the canvas. 
+In a related series (still as Processing sketch) I have a 'Who's afraid of Red, Yellow and Blue' by Barnett Newman where the viewer can take a virtual knife to the canvas. 
 
 This project is meant as a template to rewrite all of my Irrational Mondriaan series and related series.
 
