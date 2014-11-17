@@ -15,7 +15,7 @@ The paintings in rest are digital reproductions of Mondriaan paintings. I choose
 
 (Painting at 'rest')
 
-What these video paintings do is giving the viewer the opopportunity to counter act this rationality with irrationalty (yelling at the painting, punching the painting, dance in front the painting) to show what maybe could have been. How far is the viewer willing to go?
+What these video paintings do is giving the viewer the opportunity to counter act this rationality with irrationalty (yelling at the painting, punching the painting, dance in front the painting) to show what maybe could have been. How far is the viewer willing to go?
 
 ![alt tag](https://github.com/DeRaafMedia/ProjectIrrationalMondriaan/blob/master/bin/data/Irrational Mondriaan.png)
 
