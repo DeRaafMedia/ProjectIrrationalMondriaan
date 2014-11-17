@@ -9,8 +9,7 @@ void ofApp::setup(){
     ofBackground(0, 0, 0);
     
     ofSetVerticalSync(true);
-    ofSetCircleResolution(80);
-    ofBackground(54, 54, 54);
+    ofSetCircleResolution(100);
     
     soundStream.listDevices();
     
@@ -40,18 +39,39 @@ void ofApp::update(){
 
 //--------------------------------------------------------------
 void ofApp::draw(){
-    rectangle_1.draw("square_1", 0, 0, 790, 800, 255, 255, 255, 0, showSquaresId, oscEnabled);
-    ofSetCircleResolution(50);
+    float fullscreenOffset = (ofGetWindowWidth() * 0.5) - (790 * 0.5);
+    
+    rectangle_1.draw("square_1", 0 + fullscreenOffset, 0, 790, 800, 255, 255, 255, 0, showSquaresId, oscEnabled);
+    
     ofSetColor(0, 0, 0);
-    ofDrawCircle(356, 450, ((scaledVol * 190.0f) * 1.8) + ((((scaledVol * 190.0f) / 100) * 10) * 1.8));
+    ofDrawCircle(356 + fullscreenOffset, 449, (((scaledVol * 1.0) * 190.0f) * 1.4) + (((((scaledVol * 1.0) * 190.0f) / 100) * 10) * 1.4));
     ofSetColor(255,0,0);
-    ofDrawCircle(356, 450, (scaledVol * 190.0f) * 1.8);
-    rectangle_2.draw("square_2", 349, 0, 15, 800, 0, 0, 0, 0, showSquaresId, oscEnabled);
-    rectangle_3.draw("square_3", 0, 439, 790, 20, 0, 0, 0, 0, showSquaresId, oscEnabled);
-    rectangle_4.draw("square_4", 690, 457, 17, 362, 0, 0, 0, 0, showSquaresId, oscEnabled);
-    rectangle_5.draw("square_5", 707, 564, 85, 29, 0, 0, 0, 0, showSquaresId, oscEnabled);
-    rectangle_6.draw("square_6", 0, 0, 349, 439, 254, 235, 25, 0, showSquaresId, oscEnabled);
-    rectangle_7.draw("square_7", 707, 457, 83, 108, 18, 18, 87, 0, showSquaresId, oscEnabled);
+    ofDrawCircle(356 + fullscreenOffset, 449, ((scaledVol * 1.0) * 190.0f) * 1.4);
+    
+    ofEnableAlphaBlending();
+    ofFill();
+    ofSetColor(255, 0, 0, 255);
+    ofEnableBlendMode(OF_BLENDMODE_SUBTRACT);
+    ofDrawCircle(695 + fullscreenOffset, 450, ((scaledVol * 0.3) * 190.0f) * 0.9);
+    ofSetColor(0,255,0, 255);
+    ofEnableBlendMode(OF_BLENDMODE_SUBTRACT);
+    ofDrawCircle(358 + fullscreenOffset, 780, ((scaledVol * 0.4) * 190.0f) * 1.2);
+    ofSetColor(0,0,255, 255);
+    ofEnableBlendMode(OF_BLENDMODE_SUBTRACT);
+    ofDrawCircle(695 + fullscreenOffset, 780, ((scaledVol * 0.5) * 190.0f) * 1.5);
+    ofDisableAlphaBlending();
+    
+    rectangle_2.draw("square_2", 348 + fullscreenOffset, 0, 18, 800, 0, 0, 0, 0, showSquaresId, oscEnabled);
+    rectangle_3.draw("square_3", 0 + fullscreenOffset, 440, 790, 19, 0, 0, 0, 0, showSquaresId, oscEnabled);
+    
+    rectangle_4.draw("square_4", 688 + fullscreenOffset, 459, 17, 362, 0, 0, 0, 0, showSquaresId, oscEnabled);
+    rectangle_5.draw("square_5", 705 + fullscreenOffset, 567, 85, 28, 0, 0, 0, 0, showSquaresId, oscEnabled);
+    
+    rectangle_6.draw("square_6", 0 + fullscreenOffset, 0, 348, 440, 254, 235, 25, 0, showSquaresId, oscEnabled);
+    
+    rectangle_7.draw("square_7", 705 + fullscreenOffset, 459, 85, 108, 18, 18, 87, 0, showSquaresId, oscEnabled);
+    rectangle_8.draw("square_8", 366 + fullscreenOffset, 776, 324, 17, 0, 0, 0, 0, showSquaresId, oscEnabled);
+    
     ofSetColor(0, 0, 0);
     if(showInfo == true){
         if(oscEnabled == true){

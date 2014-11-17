@@ -30,7 +30,8 @@ class ofApp : public ofBaseApp {
                     rectangle_4,
                     rectangle_5,
                     rectangle_6,
-                    rectangle_7;
+                    rectangle_7,
+                    rectangle_8;
     
         ofTrueTypeFont font;
     
