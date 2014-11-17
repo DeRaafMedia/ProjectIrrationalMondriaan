@@ -19,7 +19,7 @@ What these video paintings do is giving the viewer the opportunity to counter ac
 
 ![alt tag](https://github.com/DeRaafMedia/ProjectIrrationalMondriaan/blob/master/bin/data/Irrational Mondriaan.png)
 
-(This specific painitng is sound reactive (viewer needs to yell really hard for the full effect). The solid red dot in the middle grows with increasing volume sound)
+(This specific painitng is sound reactive (viewer needs to yell really hard for the full effect). The solid red dot in the middle grows with increasing volume)
 
 In a related series (still as Processing sketch) I have a 'Who's afraid of Red, Yellow and Blue' by Barnett Newman where the viewer can take a virtual knife to the canvas. 
 
