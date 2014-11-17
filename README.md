@@ -4,9 +4,7 @@ ProjectIrrationalMondriaan
 This project was writen more than 6 years ago as an exploration of what I could do with it in the Processing.org enviroment.
 
 Since I upgraded to Yosemite a lot of old Processing sketches broke, rather than fixing the problem I wanted to do a complete rewrite (JAVA is dead?).
-
 ===========================
-
 The Irrational Mondriaan series is an exploration of how willing viewers are to interact with interactive paintings.
 
 The paintings in rest are digital reproductions of Mondriaan paintings. I choose Mondriaan paintings because to me they have a philopsophy to 'deconstruct' a composition to it's fundamentals. Horizontals, verticals, if color is used it's just a minimal pallet of reds, yellows and blues. I perceive these paintings as a pure 'rational' modus operandi.
