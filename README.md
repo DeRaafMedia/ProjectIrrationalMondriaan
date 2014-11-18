@@ -30,3 +30,10 @@ This project is meant as a template to rewrite all of my Irrational Mondriaan se
 I try to integrate OSC (http://opensoundcontrol.org) communications with these video paintings. 
 
 Written and only tested with Mac OS X Yosemite, Xcode 6.1 and I used a Nightly Build openFrameworks (wanted to test some new upcoming functionality)
+
+=================================
+
+This Project spawned:
+
+[Composition no II](https://github.com/DeRaafMedia/ProjectIrrationalMondriaan-Composition_no_II-)
+[Two lines](https://github.com/DeRaafMedia/ProjectIrrationalMondriaan-Two-lines-)
