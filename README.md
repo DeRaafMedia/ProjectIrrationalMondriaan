@@ -36,4 +36,5 @@ Written and only tested with Mac OS X Yosemite, Xcode 6.1 and I used a Nightly B
 This Project spawned:
 
 [Composition no II](https://github.com/DeRaafMedia/ProjectIrrationalMondriaan-Composition_no_II-)
+
 [Two lines](https://github.com/DeRaafMedia/ProjectIrrationalMondriaan-Two-lines-)
