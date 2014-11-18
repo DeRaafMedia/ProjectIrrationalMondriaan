@@ -7,7 +7,9 @@ Since I upgraded to Yosemite a lot of old Processing sketches broke, rather than
 
 ===========================
 
-The Irrational Mondriaan series is an exploration of how willing viewers are to interact with interactive paintings. I don't see the paintings as the art but the reactions of the public.
+The Irrational Mondriaan series is an exploration of how willing viewers are to interact with these interactive paintings. 
+
+I don't see the paintings as the art, but the reactions of the public. How do they deal with their own conflicts between rationality and urge of irrationality (or otherway around). How does the exhibition room look with only introvert people in it? How does the same exhibition room look full with extraverted people? How does a mix of people look?
 
 The paintings in rest are digital reproductions of Mondriaan paintings. I choose Mondriaan paintings because to me they have a philopsophy to 'deconstruct' a composition to it's fundamentals. Horizontals, verticals, if color is used it's just a minimal pallet of reds, yellows and blues. I perceive these paintings as a pure 'rational' modus operandi.
 
