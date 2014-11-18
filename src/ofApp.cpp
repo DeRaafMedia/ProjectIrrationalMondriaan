@@ -3,72 +3,129 @@
 //--------------------------------------------------------------
 void ofApp::setup(){
     ofSetDataPathRoot("../Resources/data/");
+    
     showInfo = false;
     showSquaresId = false;
     oscEnabled = false;
-    ofBackground(0, 0, 0);
+    
+    displayResolutionWidth = 1280;
+    displayResolutionHeight = 800;
+    stripeThickness = 22;
+    volumeSensitivity = 30;
+    horizontalLineOffset = 0.71;
+    verticalLineOffset = 0.29;
     
     ofSetVerticalSync(true);
     ofSetCircleResolution(100);
     
     soundStream.listDevices();
     
-    int bufferSize = 256;
+    int bufferSize = 1024;
     
     left.assign(bufferSize, 0.0);
     right.assign(bufferSize, 0.0);
-    volHistory.assign(400, 0.0);
-    
-    bufferCounter	= 0;
-    drawCounter		= 0;
+    volHistory.assign(displayResolutionWidth, 0.0);
+  
     smoothedVol     = 0.0;
     scaledVol		= 0.0;
     
     soundStream.setup(this, 0, 2, 44100, bufferSize, 4);
+
+    ofBackground(0);
 }
 
 //--------------------------------------------------------------
 void ofApp::update(){
+    
+    fullscreenWidthOffset = (ofGetWindowWidth() * 0.5);
+    fullscreenHeightOffset = (ofGetWindowHeight() * 0.5);
+    
     scaledVol = ofMap(smoothedVol, 0.0, 0.17, 0.0, 1.0, true);
     volHistory.push_back( scaledVol );
     
-    if( volHistory.size() >= 400 ){
+    if( volHistory.size() >= displayResolutionWidth ){
         volHistory.erase(volHistory.begin(), volHistory.begin()+1);
     }
+
 }
 
 //--------------------------------------------------------------
 void ofApp::draw(){
-    float fullscreenOffset = (ofGetWindowWidth() * 0.5) - (790 * 0.5);
+    ofPushMatrix();
+        ofTranslate(fullscreenWidthOffset, 0);
+        // Calculate background square size
+        float backGroundSquare = sqrt(pow(displayResolutionHeight, 2.0) + pow(displayResolutionHeight, 2.0)) * 0.5;
+        rectangle_1.draw("background", 0, 0, backGroundSquare, backGroundSquare, 255, 255, 255, 45, false, false);
+    ofPopMatrix();
     
-    rectangle_1.draw("square_1", 0 + fullscreenOffset, 0, 790, 800, 255, 255, 255, 0, showSquaresId, oscEnabled);
+    int stripeThickness = 22;
+    int volumeSensitivity = 30;
+    
+    ofPushMatrix();
+        ofTranslate(0, displayResolutionHeight * horizontalLineOffset);
+        ofSetColor(0, 0, 0);
+        ofDrawRectangle(0, 0, displayResolutionWidth, stripeThickness);
+    ofPopMatrix();
+    
+    ofPushMatrix();
+        ofTranslate(0, (displayResolutionHeight * horizontalLineOffset) + stripeThickness);
+        ofBeginShape();
+        for (unsigned int i = 0; i < volHistory.size(); i++){
+            if(i == 0) ofVertex(i, 0);
+            ofVertex(i, volHistory[i] * volumeSensitivity);
+            if(i == volHistory.size() -1) ofVertex(i, 0);
+        }
+        ofEndShape(false);
+    ofPopMatrix();
+    
+    ofPushMatrix();
+        ofRotate(180);
+        ofTranslate(-1280, -(displayResolutionHeight * horizontalLineOffset));
+        ofBeginShape();
+        for (unsigned int i = 0; i < volHistory.size(); i++){
+            if(i == 0) ofVertex(i, 0);
+            ofVertex(i, volHistory[i] * volumeSensitivity);
+            if(i == volHistory.size() -1) ofVertex(i, 0);
+        }
+        ofEndShape(false);
+    ofPopMatrix();
+    
+    ofPushMatrix();
+        ofTranslate(((displayResolutionWidth + (displayResolutionHeight * 0.5)) * verticalLineOffset), 0);
+    
+        ofRotate(90);
+    
+        ofPushMatrix();
+            ofTranslate(0, 0);
+            ofSetColor(0, 0, 0);
+            ofDrawRectangle(0, 0, displayResolutionWidth, stripeThickness);
+        ofPopMatrix();
+    
+        ofPushMatrix();
+            ofTranslate(0, stripeThickness);
+            ofBeginShape();
+                for (unsigned int i = 0; i < volHistory.size(); i++){
+                    if(i == 0) ofVertex(i, 0);
+                    ofVertex(i, volHistory[i] * volumeSensitivity);
+                    if(i == volHistory.size() -1) ofVertex(i, 0);
+                }
+            ofEndShape(false);
+        ofPopMatrix();
+    
+        ofPushMatrix();
+            ofRotate(180);
+            ofTranslate(-1280, 0);
+            ofBeginShape();
+                for (unsigned int i = 0; i < volHistory.size(); i++){
+                    if(i == 0) ofVertex(i, 0);
+                    ofVertex(i, volHistory[i] * volumeSensitivity);
+                    if(i == volHistory.size() -1) ofVertex(i, 0);
+                }
+            ofEndShape(false);
+        ofPopMatrix();
+    ofPopMatrix();
     
     
-    
-    // White fill
-    rectangle_9.draw("square_2", 0 + fullscreenOffset, 459, 350, 341, 255, 255, 255, 0, showSquaresId, oscEnabled);
-    rectangle_10.draw("square_2", 366 + fullscreenOffset, 0, 424, 442, 255, 255, 255, 0, showSquaresId, oscEnabled);
-    rectangle_11.draw("square_2", 705 + fullscreenOffset, 595, 85, 205, 255, 255, 255, 0, showSquaresId, oscEnabled);
-    rectangle_12.draw("square_2", 366 + fullscreenOffset, 793, 323, 7, 255, 255, 255, 0, showSquaresId, oscEnabled);
-
-    // Red dot
-    ofSetColor(0, 0, 0);
-    ofDrawCircle(356 + fullscreenOffset, 449, (((scaledVol * 0.9) * 190.0f) * 1.1) + (((((scaledVol * 0.9) * 190.0f) / 100) * 10) * 1.1));
-    ofSetColor(255,0,0);
-    ofDrawCircle(356 + fullscreenOffset, 449, ((scaledVol * 0.9) * 190.0f) * 1.1);
-    
-    // Yellow
-    rectangle_6.draw("square_6", 0 + fullscreenOffset, 0, 348, 440, 254, 235, 25, 0, showSquaresId, oscEnabled);
-    
-    //Blue
-    rectangle_7.draw("square_7", 705 + fullscreenOffset, 459, 85, 108, 18, 18, 87, 0, showSquaresId, oscEnabled);
-    
-    // Black lines
-    rectangle_2.draw("square_2", 348 + fullscreenOffset, 0, 18, 800, 0, 0, 0, 0, showSquaresId, oscEnabled);
-    rectangle_3.draw("square_3", 0 + fullscreenOffset, 440, 800, 19, 0, 0, 0, 0, showSquaresId, oscEnabled);
-    rectangle_4.draw("square_4", 688 + fullscreenOffset, 459, 17, 362, 0, 0, 0, 0, showSquaresId, oscEnabled);
-    rectangle_5.draw("square_5", 705 + fullscreenOffset, 567, 85, 28, 0, 0, 0, 0, showSquaresId, oscEnabled);
-    rectangle_8.draw("square_8", 366 + fullscreenOffset, 776, 324, 17, 0, 0, 0, 0, showSquaresId, oscEnabled);
 }
 
 //--------------------------------------------------------------
@@ -77,12 +134,13 @@ void ofApp::audioIn(float * input, int bufferSize, int nChannels){
     float curVol = 0.0;
     int numCounted = 0;
     for (int i = 0; i < bufferSize; i++){
-        left[i]		= input[i*2]*0.5;
-        right[i]	= input[i*2+1]*0.5;
+        left[i]		= input[i * 2] * 0.5;
+        right[i]	= input[i * 2 + 1] * 0.5;
         
         curVol += left[i] * left[i];
         curVol += right[i] * right[i];
-        numCounted+=2;
+        
+        numCounted += 2;
     }
     curVol /= (float)numCounted;
     curVol = sqrt( curVol );
@@ -95,6 +153,7 @@ void ofApp::audioIn(float * input, int bufferSize, int nChannels){
 
 //--------------------------------------------------------------
 void ofApp::keyPressed(int key){
+    
     if(key == 'i'){
         showInfo = !showInfo;
     }
@@ -104,10 +163,10 @@ void ofApp::keyPressed(int key){
     if(key == 'o'){
         oscEnabled = !oscEnabled;
     }
+    
     if( key == 'x' ){
         soundStream.start();
     }
-    
     if( key == 'y' ){
         soundStream.stop();
     }

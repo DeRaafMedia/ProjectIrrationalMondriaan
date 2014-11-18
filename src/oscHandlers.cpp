@@ -19,7 +19,7 @@ oscHandlers::oscHandlers(){
     blueValue = 0;
     widthValue = 0.0;
     heightValue = 0.0;
-    diameterValue = 0.0;
+    rotationValue = 0.0;
     listenForIdValue = "";
     listenForXAxisValue = "";
     listenForYAxisValue = "";
@@ -28,7 +28,7 @@ oscHandlers::oscHandlers(){
     listenForRedValue = "";
     listenForGreenValue = "";
     listenForBlueValue = "";
-    listenForDiameterValue = "";
+    listenForRotationValue = "";
 }
 
 void oscHandlers::listener(string squareId){
@@ -52,7 +52,7 @@ void oscHandlers::listener(string squareId){
         listenForRedValue = "/irrationalMondriaan/" + squareId + "/r";
         listenForGreenValue = "/irrationalMondriaan/" + squareId + "/g";
         listenForBlueValue = "/irrationalMondriaan/" + squareId + "/b";
-        listenForDiameterValue = "/irrationalMondriaan/" + squareId + "/d";
+        listenForRotationValue = "/irrationalMondriaan/" + squareId + "/d";
         
         if(m.getAddress() == listenForIdValue){
             idValue = m.getArgAsInt32(0);
@@ -78,8 +78,8 @@ void oscHandlers::listener(string squareId){
         else if(m.getAddress() == listenForBlueValue){
             blueValue = m.getArgAsInt32(0);
         }
-        else if(m.getAddress() == listenForDiameterValue){
-            diameterValue = m.getArgAsFloat(0);
+        else if(m.getAddress() == listenForRotationValue){
+            rotationValue = m.getArgAsFloat(0);
         }
         else{
             textValue = m.getAddress();

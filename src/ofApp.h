@@ -20,36 +20,30 @@ class ofApp : public ofBaseApp {
         void dragEvent(ofDragInfo dragInfo);
         void gotMessage(ofMessage msg);
     
-        bool showInfo;
-        bool showSquaresId;
-        bool oscEnabled;
+    bool showInfo;
+    bool showSquaresId;
+    bool oscEnabled;
     
-        rectangles  rectangle_1,
-                    rectangle_2,
-                    rectangle_3,
-                    rectangle_4,
-                    rectangle_5,
-                    rectangle_6,
-                    rectangle_7,
-                    rectangle_8,
-                    rectangle_9,
-                    rectangle_10,
-                    rectangle_11,
-                    rectangle_12;
+    int displayResolutionWidth, displayResolutionHeight;
+    float fullscreenWidthOffset, fullscreenHeightOffset;
+    int stripeThickness, volumeSensitivity;
+    float horizontalLineOffset, verticalLineOffset;
     
-        ofTrueTypeFont font;
+    rectangles  rectangle_1;
     
-        void audioIn(float * input, int bufferSize, int nChannels);
+    ofTrueTypeFont font;
     
-        vector <float> left;
-        vector <float> right;
-        vector <float> volHistory;
+    void audioIn(float * input, int bufferSize, int nChannels);
     
-        int 	bufferCounter;
-        int 	drawCounter;
+    vector <float> left;
+    vector <float> right;
+    vector <float> volHistory;
     
-        float smoothedVol;
-        float scaledVol;
+    int 	bufferCounter;
+    int 	drawCounter;
+
+    float smoothedVol;
+    float scaledVol;
     
-        ofSoundStream soundStream;
+    ofSoundStream soundStream;
 };

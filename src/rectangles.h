@@ -24,7 +24,7 @@ class rectangles{
                   int initRed,
                   int initGeen,
                   int initBlue,
-                  int initDiameter,
+                  int initRotation,
                   bool showSquaresId,
                   bool oscEnabled);
     
@@ -36,7 +36,7 @@ class rectangles{
         int red;
         int green;
         int blue;
-        int diameter;
+        int rotation;
     
         oscHandlers listener;
         ofTrueTypeFont font;

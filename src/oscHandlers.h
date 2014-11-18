@@ -35,7 +35,7 @@ class oscHandlers{
         int blueValue;
         int widthValue;
         int heightValue;
-        int diameterValue;
+        int rotationValue;
         string textValue;
     
         string listenForIdValue;
@@ -46,7 +46,7 @@ class oscHandlers{
         string listenForRedValue;
         string listenForGreenValue;
         string listenForBlueValue;
-        string listenForDiameterValue;
+        string listenForRotationValue;
 
     private:
 };

@@ -17,9 +17,10 @@ void rectangles::draw(string squareId,
                       int initRed,
                       int initGeen,
                       int initBlue,
-                      int diameter,
+                      int initRotation,
                       bool showSquaresId,
                       bool oscEnabled){
+    
     if(oscEnabled == true){
         
         red = listener.redValue;
@@ -29,16 +30,31 @@ void rectangles::draw(string squareId,
         yAxis = listener.yAxisValue;
         width = listener.widthValue;
         height = listener.heightValue;
+        rotation = listener.rotationValue;
         
-        ofSetColor(initRed + red, initGeen + green, initBlue + blue);
-        ofDrawRectangle(initXAxis + xAxis, initYAxis + yAxis, initWidth + height, initHeight + height);
+        ofPushMatrix();
+            ofTranslate(initXAxis + xAxis, initYAxis + yAxis);
+            ofSetColor(initRed + red, initGeen + green, initBlue + blue);
+            ofRotate(initRotation + rotation);
+            ofDrawRectangle(0, 0, initWidth + width, initHeight + height);
+            if(showSquaresId == true){
+                ofSetColor(255, 0, 0);
+                ofDrawBitmapString("<" + squareId, initXAxis + 10, initYAxis + 10);
+                ofDrawBitmapString(red, 100, 100);
+            }
+        ofPopMatrix();
     }else{
-        ofSetColor(initRed, initGeen, initBlue);
-        ofDrawRectangle(initXAxis, initYAxis, initWidth, initHeight);
+        ofPushMatrix();
+            ofTranslate(initXAxis, initYAxis);
+            ofSetColor(initRed, initGeen, initBlue);
+            ofRotate(initRotation);
+            ofDrawRectangle(0, 0, initWidth, initHeight);
+            if(showSquaresId == true){
+                ofSetColor(255, 0, 0);
+                ofDrawBitmapString("<" + squareId, initXAxis + 10, initYAxis + 10);
+                ofDrawBitmapString(red, 100, 100);
+            }
+        ofPopMatrix();
     }
-    if(showSquaresId == true){
-        ofSetColor(255, 0, 0);
-        ofDrawBitmapString("<" + squareId, initXAxis + 10, initYAxis + 10);
-        ofDrawBitmapString(red, 100, 100);
-    }
+    
 }
