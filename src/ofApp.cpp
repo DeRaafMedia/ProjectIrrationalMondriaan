@@ -28,7 +28,7 @@ void ofApp::setup(){
     ofSetVerticalSync(true);
     ofSetCircleResolution(100);
     
-    ofBackground(10, 10, 10);
+    ofBackground(0, 0, 0);
     
     vidGrabber.setVerbose(true);
     vidGrabber.setup(captureWidth, captureHeight);
