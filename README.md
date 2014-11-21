@@ -21,7 +21,7 @@ What these video paintings do is giving the viewer the opportunity to counter ac
 
 ![alt tag](https://github.com/DeRaafMedia/ProjectIrrationalMondriaan/blob/master/bin/data/Irrational Mondriaan.png)
 
-(This specific painitng is sound reactive. The two lines changes over a longer periode of time. Viewer needs to yell long and hard for the full effect)
+(This specific painitng is vision reactive. The lines on the white (gray) background move. The movements is controlled by the viewer via webcam. The sensitivity can be set so that the viewer needs to use her/his whole body to achief a tiny movement)
 
 In a related series (still as Processing sketch) I have a 'Who's afraid of Red, Yellow and Blue' by Barnett Newman where the viewer can take a virtual knife to the canvas. 
 
