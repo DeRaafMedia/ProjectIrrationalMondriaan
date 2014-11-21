@@ -1,7 +1,19 @@
 #pragma once
 
+//
+//  ofApp.h
+//  ProjectIrrationalMondriaan
+//
+//  Created by Remco Platjes on 19-11-14.
+//
+//
 #include "ofMain.h"
 #include "rectangles.h"
+#include "ofxOpenCv.h"
+#include "ofxBlobsManager.h"
+#include "ofxTweener.h"
+
+#define _USE_LIVE_VIDEO
 
 class ofApp : public ofBaseApp {
     public:
@@ -19,31 +31,35 @@ class ofApp : public ofBaseApp {
         void windowResized(int w, int h);
         void dragEvent(ofDragInfo dragInfo);
         void gotMessage(ofMessage msg);
+        void drawSoundReactiveBar(int initWidth, int initHeight, int initThickness, int initRed, int initGreen, int initBlue, int initBufferSize, float initSensitivity);
     
     bool showInfo;
+    bool showDot;
     bool showSquaresId;
     bool oscEnabled;
     
     int displayResolutionWidth, displayResolutionHeight;
+    float midlineWidth, midlineHeight;
     float fullscreenWidthOffset, fullscreenHeightOffset;
-    int stripeThickness, volumeSensitivity;
-    float horizontalLineOffset, verticalLineOffset;
+    int captureWidth, captureHeight;
     
-    rectangles  rectangle_1;
+    ofVideoGrabber vidGrabber;
     
-    ofTrueTypeFont font;
+    ofxCvGrayscaleImage grayImage, grayBackground, grayDifference;
+    ofxCvColorImage	colorImage;
     
-    void audioIn(float * input, int bufferSize, int nChannels);
+    ofxCvContourFinder contourFinder;
     
-    vector <float> left;
-    vector <float> right;
-    vector <float> volHistory;
+    int blobMinimalArea, blobMaximumArea, blobMaximumNumber;
+    bool blobFindHoles;
     
-    int 	bufferCounter;
-    int 	drawCounter;
-
-    float smoothedVol;
-    float scaledVol;
+    int threshold;
+    bool learnBackground;
     
-    ofSoundStream soundStream;
+    float xAxisDisplacementRoom, yAxisDisplacementRoom;
+    float xAxisDisplacement, yAxisDisplacement;
+    
+    ofxBlobsManager blobManager;
+    
+    rectangles rectangle_1;
 };

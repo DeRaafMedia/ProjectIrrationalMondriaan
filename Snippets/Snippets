@@ -1,0 +1,39 @@
+if(showInfo == true){
+        ofPushMatrix();
+            ofTranslate(ofGetWindowWidth() * 0.25, 0);
+            ofSetColor(0, 0, 0);
+            //ofDrawRectangle(-(ofGetWindowWidth() * 0.25), 0, ofGetWindowWidth(), ofGetWindowHeight());
+            ofSetColor(255, 255, 255);
+            grayBackground.draw(20, 20);
+            grayDifference.draw(captureWidth + 20, 20);
+            stringstream coordinates;
+            coordinates << "[x-axis : " << contourFinder.blobs[0].boundingRect.getCenter().x << " ]"
+            << " <--> [y-axis : "<< contourFinder.blobs[0].boundingRect.getCenter().y << " ] \n"
+            << "[learn background] --> Press spacebar \n"
+            << "[Threshhold : " << threshold << " ] --> Press + / -\n"
+            << "[Toggel info] --> Press i";
+            ofDrawBitmapString(coordinates.str(), 50, 330);
+        ofPopMatrix();
+    }
+
+//for (int i = 0; i < contourFinder.nBlobs; i++){
+
+        //ofPolyline contourPoly = contourFinder.blobs[i].pts;
+        //contourPoly.draw();
+
+        //if(sizeof(contourFinder.blobs) >= 1){
+            //xAxisDisplacement = (contourFinder.blobs[0].boundingRect.getCenter().x) / 2;
+            //yAxisDisplacement = (contourFinder.blobs[0].boundingRect.getCenter().y) / 2;
+        //}
+        //else if(sizeof(contourFinder.blobs) <= 1){
+            //for(int j = xAxisDisplacement; j > 0.0; j -= 0.1){
+                //xAxisDisplacement = j;
+            //}
+            //for(int k = yAxisDisplacement; k > 0.0; k -= 0.1){
+                //yAxisDisplacement = k;
+            //}
+        //}
+    //}
+
+    // debug draw the filtered blobs
+    //blobManager.debugDraw(0, 0, 320, 240, 320, 240);

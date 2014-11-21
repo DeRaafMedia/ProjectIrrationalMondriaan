@@ -1,3 +1,10 @@
+//
+//  ofApp.cpp
+//  ProjectIrrationalMondriaan
+//
+//  Created by Remco Platjes on 19-11-14.
+//
+//
 #include "ofApp.h"
 
 //--------------------------------------------------------------
@@ -5,52 +12,105 @@ void ofApp::setup(){
     ofSetDataPathRoot("../Resources/data/");
     
     showInfo = false;
+    showDot = false;
     showSquaresId = false;
     oscEnabled = false;
     
     displayResolutionWidth = 1280;
     displayResolutionHeight = 800;
-    stripeThickness = 22;
-    volumeSensitivity = 30;
-    horizontalLineOffset = 0.71;
-    verticalLineOffset = 0.29;
+    
+    midlineWidth = displayResolutionWidth * 0.5;
+    midlineHeight = displayResolutionHeight * 0.5;
+    
+    captureWidth = 320;
+    captureHeight = 240;
     
     ofSetVerticalSync(true);
     ofSetCircleResolution(100);
     
-    soundStream.listDevices();
+    ofBackground(10, 10, 10);
     
-    int bufferSize = 1024;
+    vidGrabber.setVerbose(true);
+    vidGrabber.setup(captureWidth, captureHeight);
+   
+    colorImage.allocate(captureWidth, captureHeight);
+    grayImage.allocate(captureWidth, captureHeight);
+    grayBackground.allocate(captureWidth, captureHeight);
+    grayDifference.allocate(captureWidth, captureHeight);
     
-    left.assign(bufferSize, 0.0);
-    right.assign(bufferSize, 0.0);
-    volHistory.assign(displayResolutionWidth, 0.0);
-  
-    smoothedVol     = 0.0;
-    scaledVol		= 0.0;
+    blobMinimalArea = 1000;
+    blobMaximumArea = captureWidth * captureHeight / 3;
+    blobMaximumNumber = 1;
+    blobFindHoles = false;
     
-    soundStream.setup(this, 0, 2, 44100, bufferSize, 4);
-
-    ofBackground(0);
+    blobManager.normalizePercentage = 0.7;
+    blobManager.giveLowestPossibleIDs = true;
+    blobManager.maxUndetectedTime = 200;
+    blobManager.minDetectedTime = 500;
+    blobManager.debugDrawCandidates = true;
+    blobManager.enableUndetectedBlobs = true;
+    
+    learnBackground = true;
+    threshold = 50;
+    
+    xAxisDisplacementRoom = 100.0;
+    yAxisDisplacementRoom = 100.0;
+    xAxisDisplacement = 1.0;
+    yAxisDisplacement = 1.0;
 }
 
 //--------------------------------------------------------------
 void ofApp::update(){
-    
     fullscreenWidthOffset = (ofGetWindowWidth() * 0.5);
     fullscreenHeightOffset = (ofGetWindowHeight() * 0.5);
     
-    scaledVol = ofMap(smoothedVol, 0.0, 0.17, 0.0, 1.0, true);
-    volHistory.push_back( scaledVol );
+    bool newFrame = false;
     
-    if( volHistory.size() >= displayResolutionWidth ){
-        volHistory.erase(volHistory.begin(), volHistory.begin()+1);
+    vidGrabber.update();
+    newFrame = vidGrabber.isFrameNew();
+    
+    if(newFrame){
+        colorImage.setFromPixels(vidGrabber.getPixels());
+        colorImage.mirror(false, true);
+        grayImage = colorImage;
+        
+        
+        if (learnBackground == true){
+            grayBackground = grayImage;
+            learnBackground = false;
+        }
+        
+        grayDifference.absDiff(grayBackground, grayImage);
+        grayDifference.threshold(threshold);
+        
+        contourFinder.findContours(grayDifference, blobMinimalArea, blobMaximumArea, blobMaximumNumber, blobFindHoles);
     }
-
+    
+    blobManager.update(contourFinder.blobs);
+    Tweener.update();
+    
+    
+    if(blobManager.blobs.size() > 0){
+        for(int i = 0; i < blobManager.blobs.size() ; i++)
+        {
+            ofxCvBlob blob = blobManager.blobs.at(i);
+        
+            Tweener.addTween(xAxisDisplacement, (blob.centroid.x / (captureWidth * 0.01)) * 0.01, 10);
+            Tweener.addTween(yAxisDisplacement, (blob.centroid.y / (captureHeight * 0.01)) * 0.01, 10);
+        }
+    }else{
+        for(float i = xAxisDisplacement; i < 1.0; i = i + 0.01){
+                Tweener.addTween(xAxisDisplacement, i, 10);
+        }
+        for(float i = yAxisDisplacement; i < 1.0; i = i + 0.01){
+            Tweener.addTween(yAxisDisplacement, i, 10);
+        }
+    }
 }
 
 //--------------------------------------------------------------
 void ofApp::draw(){
+    
     ofPushMatrix();
         ofTranslate(fullscreenWidthOffset, 0);
         // Calculate background square size
@@ -58,97 +118,57 @@ void ofApp::draw(){
         rectangle_1.draw("background", 0, 0, backGroundSquare, backGroundSquare, 255, 255, 255, 45, false, false);
     ofPopMatrix();
     
-    int stripeThickness = 22;
-    int volumeSensitivity = 30;
-    
     ofPushMatrix();
-        ofTranslate(0, displayResolutionHeight * horizontalLineOffset);
+        ofTranslate(xAxisDisplacementRoom * xAxisDisplacement, yAxisDisplacementRoom * yAxisDisplacement);
+        if(showDot == true){
+            ofSetColor(128, 128, 128);
+            ofDrawCircle(0, 0, 20);
+        }
+    
         ofSetColor(0, 0, 0);
-        ofDrawRectangle(0, 0, displayResolutionWidth, stripeThickness);
+    
+        ofDrawRectangle(-(displayResolutionWidth * 0.5),
+                        midlineHeight * (1.0 - 0.433) - xAxisDisplacementRoom,
+                        displayResolutionWidth * 2,
+                        displayResolutionHeight * 0.027);
+    
+        ofDrawRectangle(-(displayResolutionWidth * 0.5),
+                        (midlineHeight * 1.68) - xAxisDisplacementRoom,
+                        displayResolutionWidth * 2,
+                        displayResolutionHeight * 0.027);
+    
+        ofDrawRectangle((midlineWidth  - yAxisDisplacementRoom) - (midlineWidth * 0.34),
+                        -(displayResolutionHeight * 0.5),
+                        displayResolutionHeight * 0.027,
+                        displayResolutionHeight * 2);
+    
+        ofDrawRectangle((midlineWidth - yAxisDisplacementRoom) + (midlineWidth * (1.0 - 0.605)),
+                        -(displayResolutionHeight * 0.5),
+                        displayResolutionHeight * 0.034,
+                        displayResolutionHeight * 2);
+    
     ofPopMatrix();
     
-    ofPushMatrix();
-        ofTranslate(0, (displayResolutionHeight * horizontalLineOffset) + stripeThickness);
-        ofBeginShape();
-        for (unsigned int i = 0; i < volHistory.size(); i++){
-            if(i == 0) ofVertex(i, 0);
-            ofVertex(i, volHistory[i] * volumeSensitivity);
-            if(i == volHistory.size() -1) ofVertex(i, 0);
-        }
-        ofEndShape(false);
-    ofPopMatrix();
-    
-    ofPushMatrix();
-        ofRotate(180);
-        ofTranslate(-1280, -(displayResolutionHeight * horizontalLineOffset));
-        ofBeginShape();
-        for (unsigned int i = 0; i < volHistory.size(); i++){
-            if(i == 0) ofVertex(i, 0);
-            ofVertex(i, volHistory[i] * volumeSensitivity);
-            if(i == volHistory.size() -1) ofVertex(i, 0);
-        }
-        ofEndShape(false);
-    ofPopMatrix();
-    
-    ofPushMatrix();
-        ofTranslate(((displayResolutionWidth + (displayResolutionHeight * 0.5)) * verticalLineOffset), 0);
-    
-        ofRotate(90);
-    
+    if(showInfo == true){
         ofPushMatrix();
-            ofTranslate(0, 0);
+            ofTranslate(ofGetWindowWidth() * 0.25, 0);
             ofSetColor(0, 0, 0);
-            ofDrawRectangle(0, 0, displayResolutionWidth, stripeThickness);
-        ofPopMatrix();
-    
-        ofPushMatrix();
-            ofTranslate(0, stripeThickness);
-            ofBeginShape();
-                for (unsigned int i = 0; i < volHistory.size(); i++){
-                    if(i == 0) ofVertex(i, 0);
-                    ofVertex(i, volHistory[i] * volumeSensitivity);
-                    if(i == volHistory.size() -1) ofVertex(i, 0);
-                }
-            ofEndShape(false);
-        ofPopMatrix();
-    
-        ofPushMatrix();
-            ofRotate(180);
-            ofTranslate(-1280, 0);
-            ofBeginShape();
-                for (unsigned int i = 0; i < volHistory.size(); i++){
-                    if(i == 0) ofVertex(i, 0);
-                    ofVertex(i, volHistory[i] * volumeSensitivity);
-                    if(i == volHistory.size() -1) ofVertex(i, 0);
-                }
-            ofEndShape(false);
-        ofPopMatrix();
-    ofPopMatrix();
-    
-    
-}
-
-//--------------------------------------------------------------
-void ofApp::audioIn(float * input, int bufferSize, int nChannels){
-    
-    float curVol = 0.0;
-    int numCounted = 0;
-    for (int i = 0; i < bufferSize; i++){
-        left[i]		= input[i * 2] * 0.5;
-        right[i]	= input[i * 2 + 1] * 0.5;
+            ofDrawRectangle(-(ofGetWindowWidth() * 0.25), 0, ofGetWindowWidth(), ofGetWindowHeight());
+            ofSetColor(255, 255, 255);
+            grayBackground.draw(20, 20);
+            grayDifference.draw(captureWidth + 20, 20);
         
-        curVol += left[i] * left[i];
-        curVol += right[i] * right[i];
+            stringstream coordinates;
+            coordinates << "[x-axis : " << xAxisDisplacement << " ]"
+            << " <--> [y-axis : "<< yAxisDisplacement << " ] \n"
+            << "[learn background] --> Press spacebar \n"
+            << "[Threshhold : " << threshold << " ] --> Press + / -\n"
+            << "[Toggel info] --> Press i \n"
+            << "[Toggel dot] --> Press d";
+            ofDrawBitmapString(coordinates.str(), 50, 330);
         
-        numCounted += 2;
+        ofPopMatrix();
     }
-    curVol /= (float)numCounted;
-    curVol = sqrt( curVol );
-    
-    smoothedVol *= 0.93;
-    smoothedVol += 0.07 * curVol;
-    
-    bufferCounter++;
 }
 
 //--------------------------------------------------------------
@@ -157,20 +177,22 @@ void ofApp::keyPressed(int key){
     if(key == 'i'){
         showInfo = !showInfo;
     }
-    if(key == 's'){
-        showSquaresId = !showSquaresId;
+    if(key == 'd'){
+        showDot = !showDot;
     }
-    if(key == 'o'){
-        oscEnabled = !oscEnabled;
+    switch (key){
+        case ' ':
+            learnBackground = true;
+            break;
+        case '+':
+            threshold ++;
+            if (threshold > 255) threshold = 255;
+            break;
+        case '-':
+            threshold --;
+            if (threshold < 0) threshold = 0;
+            break;
     }
-    
-    if( key == 'x' ){
-        soundStream.start();
-    }
-    if( key == 'y' ){
-        soundStream.stop();
-    }
-
 }
 
 //--------------------------------------------------------------
