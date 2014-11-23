@@ -12,7 +12,6 @@ void ofApp::setup(){
     ofSetDataPathRoot("../Resources/data/");
     
     showInfo = false;
-    showDot = false;
     showSquaresId = false;
     oscEnabled = false;
     
@@ -22,41 +21,22 @@ void ofApp::setup(){
     midlineWidth = displayResolutionWidth * 0.5;
     midlineHeight = displayResolutionHeight * 0.5;
     
-    captureWidth = 320;
-    captureHeight = 240;
-    
-    ofSetVerticalSync(true);
-    ofSetCircleResolution(100);
-    
     ofBackground(0, 0, 0);
     
-    vidGrabber.setVerbose(true);
-    vidGrabber.setup(captureWidth, captureHeight);
-   
-    colorImage.allocate(captureWidth, captureHeight);
-    grayImage.allocate(captureWidth, captureHeight);
-    grayBackground.allocate(captureWidth, captureHeight);
-    grayDifference.allocate(captureWidth, captureHeight);
+    ofSetLogLevel(OF_LOG_VERBOSE);
     
-    blobMinimalArea = 1000;
-    blobMaximumArea = captureWidth * captureHeight / 3;
-    blobMaximumNumber = 1;
-    blobFindHoles = false;
+    serial.setup("/dev/tty.usbserial-A600clxb", 9600); // mac osx example
     
-    blobManager.normalizePercentage = 0.7;
-    blobManager.giveLowestPossibleIDs = true;
-    blobManager.maxUndetectedTime = 200;
-    blobManager.minDetectedTime = 500;
-    blobManager.debugDrawCandidates = true;
-    blobManager.enableUndetectedBlobs = true;
+    serial.startContinuousRead();
+    ofAddListener(serial.NEW_MESSAGE,this,&ofApp::onNewMessage);
     
-    learnBackground = true;
-    threshold = 50;
+    message = "";
     
-    xAxisDisplacementRoom = 100.0;
-    yAxisDisplacementRoom = 100.0;
-    xAxisDisplacement = 1.0;
-    yAxisDisplacement = 1.0;
+    randomColorIsSet = false;
+    
+    redColor = 0;
+    greenColor = 0;
+    blueColor = 0;
 }
 
 //--------------------------------------------------------------
@@ -64,47 +44,17 @@ void ofApp::update(){
     fullscreenWidthOffset = (ofGetWindowWidth() * 0.5);
     fullscreenHeightOffset = (ofGetWindowHeight() * 0.5);
     
-    bool newFrame = false;
-    
-    vidGrabber.update();
-    newFrame = vidGrabber.isFrameNew();
-    
-    if(newFrame){
-        colorImage.setFromPixels(vidGrabber.getPixels());
-        colorImage.mirror(false, true);
-        grayImage = colorImage;
-        
-        
-        if (learnBackground == true){
-            grayBackground = grayImage;
-            learnBackground = false;
-        }
-        
-        grayDifference.absDiff(grayBackground, grayImage);
-        grayDifference.threshold(threshold);
-        
-        contourFinder.findContours(grayDifference, blobMinimalArea, blobMaximumArea, blobMaximumNumber, blobFindHoles);
+    if(requestRead)
+    {
+        serial.sendRequest();
+        requestRead = false;
     }
     
-    blobManager.update(contourFinder.blobs);
-    Tweener.update();
-    
-    
-    if(blobManager.blobs.size() > 0){
-        for(int i = 0; i < blobManager.blobs.size() ; i++)
-        {
-            ofxCvBlob blob = blobManager.blobs.at(i);
-        
-            Tweener.addTween(xAxisDisplacement, (blob.centroid.x / (captureWidth * 0.01)) * 0.01, 10);
-            Tweener.addTween(yAxisDisplacement, (blob.centroid.y / (captureHeight * 0.01)) * 0.01, 10);
-        }
-    }else{
-        for(float i = xAxisDisplacement; i < 1.0; i = i + 0.01){
-                Tweener.addTween(xAxisDisplacement, i, 10);
-        }
-        for(float i = yAxisDisplacement; i < 1.0; i = i + 0.01){
-            Tweener.addTween(yAxisDisplacement, i, 10);
-        }
+    if(randomColorIsSet != true){
+        redColor = 255 / (random() % 10 + 1);
+        greenColor = 255 / (random() % 10 + 1);
+        blueColor = 255 / (random() % 10 + 1);
+        randomColorIsSet = true;
     }
 }
 
@@ -112,86 +62,152 @@ void ofApp::update(){
 void ofApp::draw(){
     
     ofPushMatrix();
+    
         ofTranslate(fullscreenWidthOffset, 0);
         // Calculate background square size
         float backGroundSquare = sqrt(pow(displayResolutionHeight, 2.0) + pow(displayResolutionHeight, 2.0)) * 0.5;
         rectangle_1.draw("background", 0, 0, backGroundSquare, backGroundSquare, 255, 255, 255, 45, false, false);
-    ofPopMatrix();
     
-    ofPushMatrix();
-        ofTranslate(xAxisDisplacementRoom * xAxisDisplacement, yAxisDisplacementRoom * yAxisDisplacement);
-        if(showDot == true){
-            ofSetColor(128, 128, 128);
-            ofDrawCircle(0, 0, 20);
+    
+        if(noColor != true){
+        
+            if(button_1 == true){
+                ofSetColor(255, 0, 0);
+            }
+            else if(button_2 == true){
+                ofSetColor(255, 255, 0);
+            }
+            else if(button_3 == true){
+                ofSetColor(0, 0, 255);
+            }
+            else if(button_4 == true){
+                ofSetColor(redColor, greenColor, blueColor);
+            }
+            else{
+                ofSetColor(255, 255, 255);
+            }
+        }else{
+            randomColorIsSet = false;
+            ofSetColor(255, 255, 255);
         }
+        ofDrawTriangle(0,0, -128,128, 128,128);
+    
+    
+        if(noColor != true){
+        
+            if(button_1 == true){
+                ofSetColor(redColor, greenColor, blueColor);
+            }
+            else if(button_2 == true){
+                ofSetColor(255, 0, 0);
+            }
+            else if(button_3 == true){
+                ofSetColor(255, 255, 0);
+            }
+            else if(button_4 == true){
+                ofSetColor(0, 0, 255);
+            }
+            else{
+                ofSetColor(255, 255, 255);
+            }
+        }else{
+            ofSetColor(255, 255, 255);
+        }
+        ofDrawTriangle(-256,256, -400,400, -256,544);
+    
+    
+        if(noColor != true){
+        
+            if(button_1 == true){
+                ofSetColor(0, 0, 255);
+            }
+            else if(button_2 == true){
+                ofSetColor(redColor, greenColor, blueColor);
+            }
+            else if(button_3 == true){
+                ofSetColor(255, 0, 0);
+            }
+            else if(button_4 == true){
+                ofSetColor(255, 255, 0);
+            }
+            else{
+                ofSetColor(255, 255, 255);
+            }
+        }else{
+            ofSetColor(255, 255, 255);
+        }
+        ofDrawTriangle(-211,588, 0,displayResolutionHeight, 211,588);
+    
+    
+        if(noColor != true){
+            if(button_1 == true){
+                ofSetColor(255, 255, 0);
+            }
+            else if(button_2 == true){
+                ofSetColor(0, 0, 255);
+            }
+            else if(button_3 == true){
+                ofSetColor(redColor, greenColor, blueColor);
+            }
+            else if(button_4 == true){
+                ofSetColor(255, 0, 0);
+            }
+            else{
+                ofSetColor(255, 255, 255);
+            }
+        }else{
+            ofSetColor(255, 255, 255);
+        }
+        ofDrawTriangle(238,238, 400,400, 238,561);
+    
     
         ofSetColor(0, 0, 0);
     
         ofDrawRectangle(-(displayResolutionWidth * 0.5),
-                        midlineHeight * (1.0 - 0.433) - xAxisDisplacementRoom,
+                        midlineHeight * (0.32),
                         displayResolutionWidth * 2,
-                        displayResolutionHeight * 0.027);
+                        displayResolutionHeight * 0.040);
     
         ofDrawRectangle(-(displayResolutionWidth * 0.5),
-                        (midlineHeight * 1.68) - xAxisDisplacementRoom,
+                        (midlineHeight * 1.41),
                         displayResolutionWidth * 2,
-                        displayResolutionHeight * 0.027);
+                        displayResolutionHeight * 0.03);
     
-        ofDrawRectangle((midlineWidth  - yAxisDisplacementRoom) - (midlineWidth * 0.34),
+        ofDrawRectangle(midlineWidth - (midlineWidth * 0.66),
                         -(displayResolutionHeight * 0.5),
-                        displayResolutionHeight * 0.027,
+                        displayResolutionHeight * 0.026,
                         displayResolutionHeight * 2);
     
-        ofDrawRectangle((midlineWidth - yAxisDisplacementRoom) + (midlineWidth * (1.0 - 0.605)),
+        ofDrawRectangle(-(midlineWidth * 0.40),
                         -(displayResolutionHeight * 0.5),
-                        displayResolutionHeight * 0.034,
+                        displayResolutionHeight * 0.035,
                         displayResolutionHeight * 2);
     
     ofPopMatrix();
     
     if(showInfo == true){
         ofPushMatrix();
-            ofTranslate(ofGetWindowWidth() * 0.25, 0);
-            ofSetColor(0, 0, 0);
-            ofDrawRectangle(-(ofGetWindowWidth() * 0.25), 0, ofGetWindowWidth(), ofGetWindowHeight());
-            ofSetColor(255, 255, 255);
-            grayBackground.draw(20, 20);
-            grayDifference.draw(captureWidth + 20, 20);
         
-            stringstream coordinates;
-            coordinates << "[x-axis : " << xAxisDisplacement << " ]"
-            << " <--> [y-axis : "<< yAxisDisplacement << " ] \n"
-            << "[learn background] --> Press spacebar \n"
-            << "[Threshhold : " << threshold << " ] --> Press + / -\n"
-            << "[Toggel info] --> Press i \n"
-            << "[Toggel dot] --> Press d";
-            ofDrawBitmapString(coordinates.str(), 50, 330);
         
         ofPopMatrix();
     }
 }
 
+void ofApp::onNewMessage(string & message)
+{
+    cout << "onNewMessage, message: " << message << "\n";
+    
+    button_1 = (message == "1");
+    button_2 = (message == "2");
+    button_3 = (message == "3");
+    button_4 = (message == "4");
+    noColor = (message == "0");
+}
+
 //--------------------------------------------------------------
 void ofApp::keyPressed(int key){
-    
     if(key == 'i'){
         showInfo = !showInfo;
-    }
-    if(key == 'd'){
-        showDot = !showDot;
-    }
-    switch (key){
-        case ' ':
-            learnBackground = true;
-            break;
-        case '+':
-            threshold ++;
-            if (threshold > 255) threshold = 255;
-            break;
-        case '-':
-            threshold --;
-            if (threshold < 0) threshold = 0;
-            break;
     }
 }
 
@@ -212,6 +228,7 @@ void ofApp::mouseDragged(int x, int y, int button){
 
 //--------------------------------------------------------------
 void ofApp::mousePressed(int x, int y, int button){
+    requestRead = true;
 }
 
 //--------------------------------------------------------------

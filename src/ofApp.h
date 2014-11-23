@@ -9,9 +9,7 @@
 //
 #include "ofMain.h"
 #include "rectangles.h"
-#include "ofxOpenCv.h"
-#include "ofxBlobsManager.h"
-#include "ofxTweener.h"
+#include "ofxSimpleSerial.h"
 
 #define _USE_LIVE_VIDEO
 
@@ -31,35 +29,31 @@ class ofApp : public ofBaseApp {
         void windowResized(int w, int h);
         void dragEvent(ofDragInfo dragInfo);
         void gotMessage(ofMessage msg);
-        void drawSoundReactiveBar(int initWidth, int initHeight, int initThickness, int initRed, int initGreen, int initBlue, int initBufferSize, float initSensitivity);
     
     bool showInfo;
-    bool showDot;
     bool showSquaresId;
     bool oscEnabled;
     
     int displayResolutionWidth, displayResolutionHeight;
     float midlineWidth, midlineHeight;
     float fullscreenWidthOffset, fullscreenHeightOffset;
-    int captureWidth, captureHeight;
-    
-    ofVideoGrabber vidGrabber;
-    
-    ofxCvGrayscaleImage grayImage, grayBackground, grayDifference;
-    ofxCvColorImage	colorImage;
-    
-    ofxCvContourFinder contourFinder;
-    
-    int blobMinimalArea, blobMaximumArea, blobMaximumNumber;
-    bool blobFindHoles;
-    
-    int threshold;
-    bool learnBackground;
-    
-    float xAxisDisplacementRoom, yAxisDisplacementRoom;
-    float xAxisDisplacement, yAxisDisplacement;
-    
-    ofxBlobsManager blobManager;
     
     rectangles rectangle_1;
+    
+    ofxSimpleSerial	serial;
+    
+    string message;
+    
+    bool button_1;
+    bool button_2;
+    bool button_3;
+    bool button_4;
+    bool noColor;
+    bool requestRead;
+    void onNewMessage(string & message);
+    int redColor;
+    int greenColor;
+    int blueColor;
+    bool randomColorIsSet;
+    
 };
