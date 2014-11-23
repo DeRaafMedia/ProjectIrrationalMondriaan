@@ -40,3 +40,5 @@ This Project spawned:
 [Two lines](https://github.com/DeRaafMedia/ProjectIrrationalMondriaan-Two-lines-)
 
 [Tableau I : Lozenge with four lines and gray](https://github.com/DeRaafMedia/ProjectIrrationalMondriaan-Tableau-I--Lozenge-with-four-lines-and-gray-)
+
+[Composition No 1 : Lozenge with four lines](https://github.com/DeRaafMedia/ProjectIrrationalMondriaan-Composition-No-1--Lozenge-with-four-lines-)
