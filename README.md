@@ -19,6 +19,8 @@ The paintings in rest are digital reproductions of Mondriaan paintings. I choose
 
 What these video paintings do is giving the viewer the opportunity to counter act this rationality with irrationalty (yelling at the painting, punching the painting, dance in front the painting) to show what maybe could have been. How far is the viewer willing to go?
 
+If the artist writes a interactive painting that hooks into biometric sensor array's installed on two viewers, and you only get to see the full effect of the painting when one of those sensors array's doesn't send any signals anymore. Is the addience prepared to go so far to "kill" the signals of a sensor array, is the artist willing to go that far?
+
 ![alt tag](https://github.com/DeRaafMedia/ProjectIrrationalMondriaan/blob/master/bin/data/Irrational Mondriaan.png)
 
 (This specific painitng is vision reactive. The lines on the white (gray) background move. The movements is controlled by the viewer via webcam. The sensitivity can be set so that the viewer needs to use her/his whole body to achief a tiny movement)
